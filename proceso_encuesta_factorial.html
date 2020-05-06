@@ -1824,19 +1824,28 @@ El presente proyecto de investigación tiene por objetivo identificar cuáles so
 </table>
 <div></div>
 <div style="text-align: justify">
-Las frases que se presentan en las viñetas fueron generadas a partir de un procedimiento realizado en el software SAS, el cual, selecciona las combinaciones entre los niveles de las dimensiones para generar las viñetas. Sin embargo, el apellido y la edad que se presenta en cada viñeta varía para cada encuestado, debido a que se hizo una programación en Qualtrics<br />
-con el objetivo de que no se repitiesen constantemente los apellidos y las edades en las frases, se hizo una programación en Qualtrics para que durante cada encuesta se seleccione un apellido y una edad al azar (a partir de la lista de descripciones ). A continuación se presenta la lista de apellidos y edades que se presentaron de forma aleatoria<br />
+Las frases que se presentan en las viñetas fueron generadas a partir de un procedimiento que selecciona las combinaciones entre los niveles de las dimensiones (se explicará en detalle más adelante). Con el objetivo de que no se repitiesen constantemente los mismos apellidos y edades durante la encuesta, se hizo una programación en Qualtrics para que el apellido y la edad que se presente en la viñeta se seleccione al azar desde una lista de posibilidades que se asoció a cada nivel. A continuación se presenta la lista de apellidos y edades que se presentaron de forma aleatoria<br />
 
 <div></div>
+<strong>Apellidos</strong>
 <div style="text-align: justify">
 <ul>
-<li><strong>Español:</strong> González, Muñoz, Rojas, Díaz, Pérez, Figueroa, Reyes, Correa, Bravo, Vergara, Zúñiga, Valenzuela, Molina, Castro, Escobar, Salas, Campos, Gallardo, Gaete y Fuenzalida. (Vázquez de Acuña, 1986).<br />
+<li><strong>Español:</strong> González, Muñoz, Rojas, Díaz, Pérez, Figueroa, Reyes, Correa, Bravo, Vergara, Zúñiga, Valenzuela, Molina, Castro, Escobar, Salas, Campos, Gallardo, Gaete y Fuenzalida. Estos apellidos fueron seleccionados de un artículo donde se mencionan varios apellidos asociados al linaje español en Chile. (Vázquez de Acuña, 1986).<br />
 </li>
-<li><strong>Vasco-castellano:</strong> Amunategui, Madariaga, Zañartu, de Sasia, Errázuriz, Irarrázaval, Astaburuaga, Ariztía, Tagle, Enríquez, Vicuña, Larraín, Echenique, Undurraga, Otero, Ampuero, Baquedano y Casanova. (PNUD, 2017; Fernández, 2010).<br />
+<li><strong>Vasco-castellano:</strong> Amunategui, Madariaga, Zañartu, de Sasia, Errázuriz, Irarrázaval, Astaburuaga, Ariztía, Tagle, Enríquez, Vicuña, Larraín, Echenique, Undurraga, Otero, Ampuero, Baquedano y Casanova. La mayoría de los apellidos seleccionados aparece en la lista de los “50 apellidos con mayor porcentaje de profesionales de prestigio” expuesta en un estudio del PNUD (2017). Los apellidos incorporados desde esa lista fueron evaluados a partir del artículo de Fernández (2010) sobre el linaje Vasco en Chile. Se incorporó un par de apellidos que no aparece en la primera lista, pero sí en el artículo de Fernández.<br />
 </li>
-<li><strong>Europeo:</strong> Zegers, Schmidt, Edwards, Moore, Petersen, Klein, Hitschfeld, Moller, Lyon, Neumann, Hott, Richards, Campbell, Werner, Bunster, Walker y Niklitschek. Estos apellidos europeos fueron seleccionados de la lista de 50 apellidos con mayor porcentaje de profesionales de prestigio (PNUD, 2017, p.34).<br />
+<li><strong>Europeo:</strong> Zegers, Schmidt, Edwards, Moore, Petersen, Klein, Hitschfeld, Moller, Lyon, Neumann, Hott, Richards, Campbell, Werner, Bunster, Walker y Niklitschek. Todos estos apellidos fueron seleccionados desde la lista de “50 apellidos con mayor porcentaje de profesionales de prestigio” (PNUD, 2017, p.34).<br />
 </li>
-<li><strong>Indígena:</strong> Mariman, Huenchual, Colipi, Carilao, Caripan, Maliqueo, Huenulef, Llanquiman, Lincopi, Melinao, Huaiquipan, Lienlaf, Catrinao, Cheuqueman, Huenchu, Cayupan, Huenten, Levican, Huaiquimil y Pailahueque. (PNUD, 2017).<br />
+<li><strong>Indígena:</strong> Mariman, Huenchual, Colipi, Carilao, Caripan, Maliqueo, Huenulef, Llanquiman, Lincopi, Melinao, Huaiquipan, Lienlaf, Catrinao, Cheuqueman, Huenchu, Cayupan, Huenten, Levican, Huaiquimil y Pailahueque. Todos estos apellidos fueron seleccionados a partir de la lista de “50 apellidos donde no hay un solo profesional de prestigio” (PNUD, 2017, p.34).<br />
+
+<div></div>
+<strong>Edades</strong>
+<div style="text-align: justify"></li>
+<li><strong>35:</strong> 33, 35 y 37 años.<br />
+</li>
+<li><strong>45:</strong> 43, 45 y 47 años.<br />
+</li>
+<li><strong>55:</strong> 53, 55 y 57 años.<br />
 
 <div></div>
 </li>
@@ -2125,14 +2134,31 @@ A continuación se presenta el código que se utilizo para generar el listado de
 ## [11] &quot;10 11 [[Question:DB:El señor ${e://Field/Vasco-Castellano} tiene ${e://Field/35} años, estudió en un colegio privado y completó estudios técnico-profesionales. No tiene hijos y su madre completó estudios de postgrado. Actualmente recibe un ingreso mensual de $4.300.000 pesos]] [[PageBreak]]&quot;
 ## [12] &quot;10 12 [[Question:DB:El señor ${e://Field/Indigena} tiene ${e://Field/55} años, estudió en un colegio subvencionado y completó estudios universitarios. Tiene un hijo y su madre completó estudios técnico-profesionales. Actualmente recibe un ingreso mensual de $655.000 pesos]] [[PageBreak]]&quot;</code></pre>
 <div style="text-align: justify">
-El output generado requirió ser levemente editado para poder ser importado a Qualtrics, teniendo que agregar al inicio de cada documento “[[AdvancedFormat]]”, en la línea siguiente “[[Block:01]]” y “[[PageBreak]]” después de cada par de preguntas. Además, la aleatorización de los apellidos y su introducción en las viñetas se hizo a través del comando “Set Embedded Data” de Qualtrics.<br />
+El output generado requirió ser levemente editado para poder ser importado a Qualtrics, teniendo que agregar al inicio de cada documento “[[AdvancedFormat]]” y en la línea siguiente “[[Block:01]]” (cambiando el número en función del que corresponda). Todas las frases debieron ser copiadas y pegadas en la línea de abajo, de modo que cada frase aparece dos veces en el archivo “.txt”: en una línea aparece la frase entre corchetes y en la línea siguiente aparece la frase sin corchetes. Luego de cada par de frases, en una línea diferente, se debe poner la instrucción “[[PageBreak]]”. Al realizar esos cambios el archivo puede ser importado a Qualtrics como encuesta. En la plataforma Qualtrics se aleatorizó los apellidos y las edades que se presentan en cada encuesta a través del comando “Set Embedded Data”, el procedimiento siguió las instrucciones expuestas en el artículo de Helfer et al. (2018).<br />
 En el siguiente enlace puede acceder a la encuesta: <a href="https://survey.co1.qualtrics.com/jfe/form/SV_3aTXLZ0mXUuQoLz">encuesta en línea</a><br />
 
 <div></div>
 
-
-
 </div>
+</div>
+<div id="bibliografia" class="section level1">
+<h1>Bibliografía</h1>
+<div style="text-align: justify">
+Fernández, P. (2010). <em>Linajes vascos en Chile</em>. Biblioteca virtual universal. Revisado el 15 de enero, 2020, en: <a href="https://biblioteca.org.ar/libros/155756.pdf" class="uri">https://biblioteca.org.ar/libros/155756.pdf</a>
+<div></div>
+<div style="text-align: justify">
+Helfer, L., De Wilde, M., Proferes, N., McElhinney, H., Taylor, B. &amp; Sinclair, M. (2018). <em>Implementing a Factorial Survey in Qualtrics</em>. Revisado el 30 de marzo, 2020, en: <a href="https://luziahelfer.files.wordpress.com/2018/12/FS-Manual-Dec-2018.pdf" class="uri">https://luziahelfer.files.wordpress.com/2018/12/FS-Manual-Dec-2018.pdf</a>
+<div></div>
+<div style="text-align: justify">
+PNUD (2017). <em>Desiguales. Orígenes, cambios y desafíos de la brecha social en Chile.</em> Santiago de Chile, Programa de las Naciones Unidas para el Desarrollo.<br />
+
+<div></div>
+<div style="text-align: justify">
+Vázquez de Acuña, I. (1986). Nobleza colonial de Chile, linajes españoles [artículo en línea]. Boletín de la Academia Chilena de la Historia, no. 97, p. 476-477. Revisado el 15 de enero, 2020: <a href="http://www.bibliotecanacionaldigital.gob.cl/bnd/628/w3-article-585295.html" class="uri">http://www.bibliotecanacionaldigital.gob.cl/bnd/628/w3-article-585295.html</a><br />
+
+<div></div>
+
+
 </div>
 
 

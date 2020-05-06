@@ -62,14 +62,21 @@ El presente proyecto de investigación tiene por objetivo identificar cuáles so
 |              |                   |**5.** $4.300.000|
 <div/>
 <div style="text-align: justify">
-Las frases que se presentan en las viñetas fueron generadas a partir de un procedimiento realizado en el software SAS, el cual, selecciona las combinaciones entre los niveles de las dimensiones para generar las viñetas (se explicará en detalle más adelante). Sin embargo, el apellido y la edad que se presenta en cada viñeta varía para cada encuestado, debido a que se hizo una programación en Qualtrics  
-con el objetivo de que no se repitiesen constantemente los apellidos y las edades en las frases, se hizo una programación en Qualtrics para que durante cada encuesta se seleccione un apellido y una edad al azar (a partir de la lista de descripciones ). A continuación se presenta la lista de apellidos y edades que se presentaron de forma aleatoria   
+Las frases que se presentan en las viñetas fueron generadas a partir de un procedimiento que selecciona las combinaciones entre los niveles de las dimensiones (se explicará en detalle más adelante). Con el objetivo de que no se repitiesen constantemente los mismos apellidos y edades durante la encuesta, se hizo una programación en Qualtrics para que el apellido y la edad que se presente en la viñeta se seleccione al azar desde una lista de posibilidades que se asoció a cada nivel. A continuación se presenta la lista de apellidos y edades que se presentaron de forma aleatoria   
 <div/>
+**Apellidos**
 <div style="text-align: justify">
-* __Español:__ González, Muñoz, Rojas, Díaz, Pérez, Figueroa, Reyes, Correa, Bravo, Vergara, Zúñiga, Valenzuela, Molina, Castro, Escobar, Salas, Campos, Gallardo, Gaete y Fuenzalida. (Vázquez de Acuña, 1986).  
-* __Vasco-castellano:__ Amunategui, Madariaga, Zañartu, de Sasia, Errázuriz, Irarrázaval, Astaburuaga, Ariztía, Tagle, Enríquez, Vicuña, Larraín, Echenique, Undurraga, Otero, Ampuero, Baquedano y Casanova. (PNUD, 2017; Fernández, 2010).   
-* __Europeo:__ Zegers, Schmidt, Edwards, Moore, Petersen, Klein, Hitschfeld, Moller, Lyon, Neumann, Hott, Richards, Campbell, Werner, Bunster, Walker y Niklitschek. Estos apellidos europeos fueron seleccionados de la lista de 50 apellidos con mayor porcentaje de profesionales de prestigio (PNUD, 2017, p.34).    
-* __Indígena:__ Mariman, Huenchual, Colipi, Carilao, Caripan, Maliqueo, Huenulef, Llanquiman, Lincopi, Melinao, Huaiquipan, Lienlaf, Catrinao, Cheuqueman, Huenchu, Cayupan, Huenten, Levican, Huaiquimil y Pailahueque. (PNUD, 2017).   
+* __Español:__ González, Muñoz, Rojas, Díaz, Pérez, Figueroa, Reyes, Correa, Bravo, Vergara, Zúñiga, Valenzuela, Molina, Castro, Escobar, Salas, Campos, Gallardo, Gaete y Fuenzalida. Estos apellidos fueron seleccionados de un artículo donde se mencionan varios apellidos asociados al linaje español en Chile. (Vázquez de Acuña, 1986).    
+* __Vasco-castellano:__ Amunategui, Madariaga, Zañartu, de Sasia, Errázuriz, Irarrázaval, Astaburuaga, Ariztía, Tagle, Enríquez, Vicuña, Larraín, Echenique, Undurraga, Otero, Ampuero, Baquedano y Casanova. La mayoría de los apellidos seleccionados aparece en la lista de los "50 apellidos con mayor porcentaje de profesionales de
+prestigio" expuesta en un estudio del PNUD (2017). Los apellidos incorporados desde esa lista fueron evaluados a partir del artículo de Fernández (2010) sobre el linaje Vasco en Chile. Se incorporó un par de apellidos que no aparece en la primera lista, pero sí en el artículo de Fernández.  
+* __Europeo:__ Zegers, Schmidt, Edwards, Moore, Petersen, Klein, Hitschfeld, Moller, Lyon, Neumann, Hott, Richards, Campbell, Werner, Bunster, Walker y Niklitschek. Todos estos apellidos fueron seleccionados desde la lista de "50 apellidos con mayor porcentaje de profesionales de prestigio" (PNUD, 2017, p.34).    
+* __Indígena:__ Mariman, Huenchual, Colipi, Carilao, Caripan, Maliqueo, Huenulef, Llanquiman, Lincopi, Melinao, Huaiquipan, Lienlaf, Catrinao, Cheuqueman, Huenchu, Cayupan, Huenten, Levican, Huaiquimil y Pailahueque. Todos estos apellidos fueron seleccionados a partir de la lista de "50 apellidos donde no hay un solo profesional de prestigio" (PNUD, 2017, p.34).     
+<div/>
+**Edades**
+<div style="text-align: justify">
+* __35:__ 33, 35 y 37 años.  
+* __45:__ 43, 45 y 47 años.  
+* __55:__ 53, 55 y 57 años.   
 <div/>
 
 # Construcción del instrumento de medición
@@ -218,7 +225,20 @@ print(paste(decks[[i]]$deck,decks[[i]]$id,decks[[i]]$vig))
 ```
 
 <div style="text-align: justify">
-El output generado requirió ser levemente editado para poder ser importado a Qualtrics, teniendo que agregar al inicio de cada documento "[[AdvancedFormat]]", en la línea siguiente "[[Block:01]]" y "[[PageBreak]]" después de cada par de preguntas. Además, la aleatorización de los apellidos y su introducción en las viñetas se hizo a través del comando "Set Embedded Data" de Qualtrics.  
+El output generado requirió ser levemente editado para poder ser importado a Qualtrics, teniendo que agregar al inicio de cada documento "[[AdvancedFormat]]" y en la línea siguiente "[[Block:01]]" (cambiando el número en función del que corresponda). Todas las frases debieron ser copiadas y pegadas en la línea de abajo, de modo que cada frase aparece dos veces en el archivo ".txt": en una línea aparece la frase entre corchetes y en la línea siguiente aparece la frase sin corchetes. Luego de cada par de frases, en una línea diferente, se debe poner la instrucción "[[PageBreak]]". Al realizar esos cambios el archivo puede ser importado a Qualtrics como encuesta. En la plataforma Qualtrics se aleatorizó los apellidos y las edades que se presentan en cada encuesta a través del comando "Set Embedded Data", el procedimiento siguió las instrucciones expuestas en el artículo de Helfer et al. (2018).  
 En el siguiente enlace puede acceder a la encuesta: [encuesta en línea](https://survey.co1.qualtrics.com/jfe/form/SV_3aTXLZ0mXUuQoLz)  
 <div/>
 
+# Bibliografía
+<div style="text-align: justify">
+Fernández, P. (2010). *Linajes vascos en Chile*. Biblioteca virtual universal. Revisado el 15 de enero, 2020, en: https://biblioteca.org.ar/libros/155756.pdf 
+<div/>
+<div style="text-align: justify">
+Helfer, L., De Wilde, M., Proferes, N., McElhinney, H., Taylor, B. & Sinclair, M. (2018). *Implementing a Factorial Survey in Qualtrics*. Revisado el 30 de marzo, 2020, en: https://luziahelfer.files.wordpress.com/2018/12/FS-Manual-Dec-2018.pdf 
+<div/>
+<div style="text-align: justify">
+PNUD (2017). *Desiguales. Orígenes, cambios y desafíos de la brecha social en Chile.* Santiago de Chile, Programa de las Naciones Unidas para el Desarrollo.  
+<div/>
+<div style="text-align: justify">
+Vázquez de Acuña, I. (1986). Nobleza colonial de Chile, linajes españoles [artículo en línea]. Boletín de la Academia Chilena de la Historia, no. 97, p. 476-477. Revisado el 15 de enero, 2020: http://www.bibliotecanacionaldigital.gob.cl/bnd/628/w3-article-585295.html  
+<div/>
