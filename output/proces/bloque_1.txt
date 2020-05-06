@@ -1,0 +1,38 @@
+﻿[[AdvancedFormat]]
+[[Block:01]]
+[[Question:DB:El señor ${e://Field/Vasco-Castellano1} tiene ${e://Field/45a} años, estudió en un colegio municipal y completó la enseñanza básica. Tiene dos hijos y su madre completó estudios técnico-profesionales. Actualmente recibe un ingreso mensual de $1.200.000 pesos]] 
+El señor ${e://Field/Vasco-Castellano1} tiene ${e://Field/45a} años, estudió en un colegio municipal y completó la enseñanza básica. Tiene dos hijos y su madre completó estudios técnico-profesionales. Actualmente recibe un ingreso mensual de $1.200.000 pesos 
+[[PageBreak]]
+[[Question:DB:El señor ${e://Field/Espanol1} tiene ${e://Field/55a} años, estudió en un colegio municipal y completó estudios universitarios. Tiene un hijo y su madre completó la enseñanza básica. Actualmente recibe un ingreso mensual de $2.500.000 pesos]]
+El señor ${e://Field/Espanol1} tiene ${e://Field/55a} años, estudió en un colegio municipal y completó estudios universitarios. Tiene un hijo y su madre completó la enseñanza básica. Actualmente recibe un ingreso mensual de $2.500.000 pesos 
+[[PageBreak]]
+[[Question:DB:La señora ${e://Field/Vasco-Castellano2} tiene ${e://Field/55b} años, estudió en un colegio privado y completó la enseñanza básica. No tiene hijos y su madre completó estudios universitarios. Actualmente recibe un ingreso mensual de $655.000 pesos]] 
+La señora ${e://Field/Vasco-Castellano2} tiene ${e://Field/55b} años, estudió en un colegio privado y completó la enseñanza básica. No tiene hijos y su madre completó estudios universitarios. Actualmente recibe un ingreso mensual de $655.000 pesos 
+[[PageBreak]]
+[[Question:DB:El señor ${e://Field/Europeo1} tiene ${e://Field/55c} años, estudió en un colegio privado y completó estudios de postgrado. No tiene hijos y su madre completó estudios de postgrado. Actualmente recibe un ingreso mensual de $4.300.000 pesos]]
+El señor ${e://Field/Europeo1} tiene ${e://Field/55c} años, estudió en un colegio privado y completó estudios de postgrado. No tiene hijos y su madre completó estudios de postgrado. Actualmente recibe un ingreso mensual de $4.300.000 pesos 
+[[PageBreak]]
+[[Question:DB:La señora ${e://Field/Indigena1} tiene ${e://Field/35a} años, estudió en un colegio subvencionado y completó estudios de postgrado. Tiene cinco hijos y su madre completó la enseñanza básica. Actualmente recibe un ingreso mensual de $655.000 pesos]] 
+La señora ${e://Field/Indigena1} tiene ${e://Field/35a} años, estudió en un colegio subvencionado y completó estudios de postgrado. Tiene cinco hijos y su madre completó la enseñanza básica. Actualmente recibe un ingreso mensual de $655.000 pesos 
+[[PageBreak]]
+[[Question:DB:El señor ${e://Field/Indigena2} tiene ${e://Field/45b} años, estudió en un colegio subvencionado y completó estudios universitarios. Tiene dos hijos y su madre completó estudios de postgrado. Actualmente recibe un ingreso mensual de $1.200.000 pesos]]
+El señor ${e://Field/Indigena2} tiene ${e://Field/45b} años, estudió en un colegio subvencionado y completó estudios universitarios. Tiene dos hijos y su madre completó estudios de postgrado. Actualmente recibe un ingreso mensual de $1.200.000 pesos 
+[[PageBreak]]
+[[Question:DB:La señora ${e://Field/Europeo2} tiene ${e://Field/45c} años, estudió en un colegio subvencionado y completó la enseñanza media. Tiene un hijo y su madre completó estudios universitarios. Actualmente recibe un ingreso mensual de $2.500.000 pesos]]
+La señora ${e://Field/Europeo2} tiene ${e://Field/45c} años, estudió en un colegio subvencionado y completó la enseñanza media. Tiene un hijo y su madre completó estudios universitarios. Actualmente recibe un ingreso mensual de $2.500.000 pesos 
+[[PageBreak]]
+[[Question:DB:La señora ${e://Field/Espanol2} tiene ${e://Field/45d} años, estudió en un colegio municipal y completó la enseñanza media. No tiene hijos y su madre completó estudios de postgrado. Actualmente recibe un ingreso mensual de $2.500.000 pesos]]
+La señora ${e://Field/Espanol2} tiene ${e://Field/45d} años, estudió en un colegio municipal y completó la enseñanza media. No tiene hijos y su madre completó estudios de postgrado. Actualmente recibe un ingreso mensual de $2.500.000 pesos 
+[[PageBreak]]
+[[Question:DB:La señora ${e://Field/Europeo3} tiene ${e://Field/35b} años, estudió en un colegio municipal y completó estudios técnico-profesionales. No tiene hijos y su madre completó estudios técnico-profesionales. Actualmente recibe un ingreso mensual de $321.000 pesos]]
+La señora ${e://Field/Europeo3} tiene ${e://Field/35b} años, estudió en un colegio municipal y completó estudios técnico-profesionales. No tiene hijos y su madre completó estudios técnico-profesionales. Actualmente recibe un ingreso mensual de $321.000 pesos 
+[[PageBreak]]
+[[Question:DB:La señora ${e://Field/Vasco-Castellano3} tiene ${e://Field/35c} años, estudió en un colegio privado y completó la enseñanza básica. Tiene cinco hijos y su madre completó la enseñanza básica. Actualmente recibe un ingreso mensual de $655.000 pesos]]
+La señora ${e://Field/Vasco-Castellano3} tiene ${e://Field/35c} años, estudió en un colegio privado y completó la enseñanza básica. Tiene cinco hijos y su madre completó la enseñanza básica. Actualmente recibe un ingreso mensual de $655.000 pesos 
+[[PageBreak]]
+[[Question:DB:La señora ${e://Field/Indigena3} tiene ${e://Field/35d} años, estudió en un colegio subvencionado y completó estudios universitarios. Tiene dos hijos y su madre completó la enseñanza media. Actualmente recibe un ingreso mensual de $4.300.000 pesos]]
+La señora ${e://Field/Indigena3} tiene ${e://Field/35d} años, estudió en un colegio subvencionado y completó estudios universitarios. Tiene dos hijos y su madre completó la enseñanza media. Actualmente recibe un ingreso mensual de $4.300.000 pesos 
+[[PageBreak]]
+[[Question:DB:El señor ${e://Field/Espanol3} tiene ${e://Field/55d} años, estudió en un colegio privado y completó estudios técnico-profesionales. Tiene un hijo y su madre completó la enseñanza media. Actualmente recibe un ingreso mensual de $321.000 pesos]]
+El señor ${e://Field/Espanol3} tiene ${e://Field/55d} años, estudió en un colegio privado y completó estudios técnico-profesionales. Tiene un hijo y su madre completó la enseñanza media. Actualmente recibe un ingreso mensual de $321.000 pesos 
+[[PageBreak]]
