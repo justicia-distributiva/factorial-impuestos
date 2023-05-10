@@ -50,5 +50,22 @@ library(lme4)
 
 # Data
 
+```{r eval=FALSE, include=FALSE}
+load(file = "input/data/proc/vig_resp.RData")
+
+factorial1 <- haven::read_sav(file = "input/data/original/factorial_ola1.sav")
+factorial2 <- haven::read_sav(file = "input/data/original/factorial_ola2.sav")
+
+save(factorial1,file = "input/data/proc/factorial_ola1.RData")
+save(factorial2,file = "input/data/proc/factorial_ola2.RData")
+
+sjmisc::frq(vig_resp$necesidades.vig)
+
+perc1<- lmer(taxperc.ln~sexo.vig+factor(edad.vig)+factor(educ.vig)+factor(apellido.vig)+factor(nse_ori.vig)+factor(necesidades.vig)+factor(educ_madre.vig)+factor(ingresos.vig)+factor(educ.re)+(1 | respondeid),data = vig_resp)
+just1<- lmer(taxjust.ln~sexo.vig+factor(edad.vig)+factor(educ.vig)+factor(apellido.vig)+factor(nse_ori.vig)+factor(necesidades.vig)+factor(educ_madre.vig)+factor(ingresos.vig)+factor(educ.re)+taxperc.ln+(1 | respondeid),data = vig_resp)
+
+
+knitreg(list(perc1,just1))
+```
 
 
