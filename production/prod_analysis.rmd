@@ -14,10 +14,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r eval=FALSE, include=FALSE}
-rmarkdown::render(input = "production/prod_prep-data.Rmd",output_format = "html_document",output_dir = "production/");browseURL(url = "production/prod_analysis.html")
-```
-
 ```{r include=FALSE}
 knitr::opts_chunk$set(warning = FALSE,message = FALSE, cache = FALSE,results = "hold")
 knitr::opts_knit$set(root.dir = "../")
@@ -28,44 +24,107 @@ Sys.setlocale("LC_MESSAGES", 'es_CL.UTF-8')
 Sys.setenv(LANG = "es_CL.UTF-8")
 ```
 
-load packages
+
 ```{r}
-library(sjlabelled)
-library(stringr)
-library(stringi)
-library(dplyr)
-library(datasets)
-library(data.table)
-library(tidyr)
-library(summarytools)
-library(sjPlot)
-library(stargazer)
-library(knitr)
-library(tidyverse)
-library(mice)
-library(texreg)
-library(lme4)
+# Funciones para renderizar tablas tanto en HTML como en pdf
+ if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+ if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+ pacman::p_load(dplyr) # librerias
+load("input/data/proc/vig_respw01.RData")
+
+
+df1 <- vig_respw01 %>% 
+  mutate(
+    perc1=taxperc+1,
+    just1=taxjust+1,
+    lnperc1 = log(perc1),
+    lnjust1 = log(just1),
+    # percR=car::recode(taxperc,"lo:1000=NA"),
+    # justR=car::recode(taxjust,"lo:1000=NA"),
+    # lnpercR=log(percR),
+    # lnjustR=log(justR)
+         ) %>% 
+    select(
+      # perc1,just1,
+      # percR,justR,
+      lnperc1,lnjust1,
+      # lnpercR,lnjustR,
+           sexo_vig,edad_vig,
+         apellido_vig,nse_ori_vig,
+         necesidades_vig,
+         ingresos_vig,educ_madre_vig,hhincome,educ) 
+
+sjPlot::plot_frq(data = df1$lnperc1,type = "histogram",show.mean = T)
+
+cormat1 <- polycor::hetcor(data = df1,parallel = T)$correlations
+
+corrplot::corrplot(cormat1,
+    method = "color",
+    addCoef.col = "#000390",
+    type = "upper",
+    tl.col = "black",
+    col=colorRampPalette(c("white","#0068DC"))(12),
+    bg = "white",
+    na.label = "-")
 ```
 
 
-# Data
+tobit model:
 
-```{r eval=FALSE, include=FALSE}
-load(file = "input/data/proc/vig_resp.RData")
+https://stats.oarc.ucla.edu/r/dae/tobit-models/#:~:text=The%20tobit%20model%2C%20also%20called,below%20and%20above%2C%20respectively).
 
-factorial1 <- haven::read_sav(file = "input/data/original/factorial_ola1.sav")
-factorial2 <- haven::read_sav(file = "input/data/original/factorial_ola2.sav")
-
-save(factorial1,file = "input/data/proc/factorial_ola1.RData")
-save(factorial2,file = "input/data/proc/factorial_ola2.RData")
-
-sjmisc::frq(vig_resp$necesidades.vig)
-
-perc1<- lmer(taxperc.ln~sexo.vig+factor(edad.vig)+factor(educ.vig)+factor(apellido.vig)+factor(nse_ori.vig)+factor(necesidades.vig)+factor(educ_madre.vig)+factor(ingresos.vig)+factor(educ.re)+(1 | respondeid),data = vig_resp)
-just1<- lmer(taxjust.ln~sexo.vig+factor(edad.vig)+factor(educ.vig)+factor(apellido.vig)+factor(nse_ori.vig)+factor(necesidades.vig)+factor(educ_madre.vig)+factor(ingresos.vig)+factor(educ.re)+taxperc.ln+(1 | respondeid),data = vig_resp)
+https://docs.zeligproject.org/articles/zelig_tobit.html se ve como la mejor opción
 
 
-knitreg(list(perc1,just1))
+```{r}
+# Funciones para renderizar tablas tanto en HTML como en pdf
+ if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+ if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+ pacman::p_load(dplyr,lme4,texreg) # librerias
+load("input/data/proc/vig_respw01.RData")
+
+
+df1 <- vig_respw01 %>% 
+  mutate(
+    perc1=taxperc+1,
+    just1=taxjust+1,
+    lnperc1 = log(perc1),
+    lnjust1 = log(just1),
+    # percR=car::recode(taxperc,"lo:1000=NA"),
+    # justR=car::recode(taxjust,"lo:1000=NA"),
+    # lnpercR=log(percR),
+    # lnjustR=log(justR)
+         ) %>% 
+    select(respondeid,
+      # perc1,just1,
+      # percR,justR,
+      lnperc1,lnjust1,
+      # lnpercR,lnjustR,
+           sexo_vig,edad_vig,
+         apellido_vig,nse_ori_vig,educ_madre_vig,
+         necesidades_vig,
+         ingresos_vig,educ_vig,
+      hhincome,educ) %>% 
+  na.omit()
+
+m_vig_dem <- lmer(lnperc1~sexo_vig+edad_vig + (1|respondeid),data =df1)
+m_vig_orig <- lmer(lnperc1~apellido_vig+nse_ori_vig + educ_madre_vig + (1|respondeid),data =df1)
+m_vig_nse <- lmer(lnperc1~ educ_vig + ingresos_vig + necesidades_vig+  (1|respondeid),data =df1)
+m_vig_full <- lmer(lnperc1~ sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig + (1|respondeid),data =df1)
+listperc <- list(m_vig_dem,m_vig_orig,m_vig_nse,m_vig_full)
+sjPlot::tab_model(listperc,show.ci = F)
+
+
+
+m_vig_dem <- lmer(lnjust1~sexo_vig+edad_vig + (1|respondeid),data =df1)
+m_vig_orig <- lmer(lnjust1~apellido_vig+nse_ori_vig + educ_madre_vig + (1|respondeid),data =df1)
+m_vig_nse <- lmer(lnjust1~ educ_vig + ingresos_vig + necesidades_vig+  (1|respondeid),data =df1)
+m_vig_perc <- lmer(lnjust1~ lnperc1 + (1|respondeid),data =df1)
+m_vig_full <- lmer(lnjust1~ sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig+lnperc1 + (1|respondeid),data =df1)
+listjust <- list(m_vig_dem,m_vig_orig,m_vig_nse,m_vig_perc,m_vig_full)
+sjPlot::tab_model(listjust,show.ci = F)
+
+
 ```
 
 
