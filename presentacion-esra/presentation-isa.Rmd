@@ -1,5 +1,5 @@
 ---
-title: "The Socialization of Meritocracy: The role of the Family and the School"
+title: "Perceptions and preferences about income taxes"
 subtitle: ".medium[**Resultados preliminares**]"
 author: "Julio Iturra, Juan Carlos Castillo, Francisco Meneses & Martín Venegas"
 institute: ".small[**FONDECYT N°1210847 Meritocracia en la escuela**]"
@@ -106,7 +106,7 @@ class: inverse
   .content-box-purple[
 ### Public support for taxation
   - Self-interest and policy support (Meltzer & Richard, 1981; McCall & Kenworthy, 2009)
-  - Deservingness opinions (Van Oorschot, 2000;Sachweh & Eicher, 2023) 
+  - Deservingness opinions: merit and need (Van Oorschot, 2000;Sachweh & Eicher, 2023) 
     
   ] 
 ]
@@ -322,12 +322,23 @@ class: inverse animated slideInRight
 .pull-right-wide[
 .center[![:scale 100%](images/modelsw2.png)]
 ]
+
+---
+
+.pull-left-narrow[
+<br>
+### Longitudinal
+]
+  
+.pull-right-wide[
+.center[![:scale 100%](images/long.png)]
+]
  
 
 ---
 class: inverse animated slideInRight
 
-## .red[The Socialization of Meritocracy: The role of the Family and the School
+## .red[Perceptions and preferences about income taxes
 ]
 
 .pull-right[
@@ -374,7 +385,7 @@ class: roja middle center
 [jiturra@bigsss.uni-bremen.de](jiturra@bigsss.uni-bremen.de)
 
 
-[github.com/juancarloscastillo/factorial-taxes](https://github.com/juancarloscastillo/factorial-taxes)
+[github.com/juancarloscastillo/factorial-impuestos](https://github.com/juancarloscastillo/factorial-impuestos)
 
 ]]
 

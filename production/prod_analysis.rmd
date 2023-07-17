@@ -303,8 +303,7 @@ ggsave(plot = last_plot(),filename = "tax_density.png",device = "png",
 
 ```
 
-```{r}
-
+```{r checks}
 # Funciones para renderizar tablas tanto en HTML como en pdf
  if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
  if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -402,7 +401,16 @@ sjPlot::tab_xtab(var.row = df2$taxperc==0,var.col = df2$ingresos_vig,show.cell.p
 sjPlot::tab_xtab(var.row = df1$taxjust==0,var.col = df1$ingresos_vig,show.cell.prc = T)
 sjPlot::tab_xtab(var.row = df2$taxjust==0,var.col = df2$ingresos_vig,show.cell.prc = T)
 
-10.1+6.6
+df1_decks <- 
+df1 %>% group_by(folio_encuestado_1) %>% summarise(deck1=mean(deck)) 
+
+df2_decks <- 
+df2 %>% group_by(folio_encuestado_1) %>% summarise(deck2=mean(deck)) 
+
+df_decks <- left_join(df1_decks,df2_decks) %>% na.omit()
+df_decks$same_deck <- df_decks$deck1==df_decks$deck2
+dim(df_decks)
+table(df_decks$same_deck)
 ```
 
 
@@ -558,7 +566,7 @@ df2 <- vig_respw02 %>%
     # lnpercR=log(percR),
     # lnjustR=log(justR)
          ) %>% 
-  dplyr::select(respondeid,folio_encuestado_1,deck,
+  dplyr::select(respondeid,folio_encuestado_1,deck,merit_pref_effort,merit_pref_talent,
          taxperc,
          taxjust,
          perc1, just1,
@@ -574,21 +582,24 @@ df2 <- vig_respw02 %>%
          ingresos_vig, educ_vig,sexo_re,edad_re,
          income5, educ) %>% 
   na.omit() %>% 
-  arrange(taxjust,taxperc)
+  arrange(taxjust,taxperc) %>% 
+  mutate(merit_pref_effort=as.numeric(merit_pref_effort),
+         merit_pref_talent=as.numeric(merit_pref_talent))
 dim(df2)
 
 # Hypothesis: Just tax --------------------------------------------------------
 m1 <- "sexo_vig+edad_vig"
 m2 <- "apellido_vig+nse_ori_vig + educ_madre_vig"
 m3 <- "educ_vig + ingresos_vig + necesidades_vig"
+# m4 <- "lnperc1 + merit_pref_effort + merit_pref_talent"
 m4 <- "lnperc1"
 m5 <- "income5 + educ + sexo_re + edad_re"
-m6 <- "sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig+lnperc1 +income5 + educ + sexo_re + edad_re"
+m6 <- "sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig+lnperc1+ income5 + educ + sexo_re + edad_re"
 m7 <- "sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig+income5 + educ + sexo_re + edad_re + deck"
 
 hipotesis <- c(m1,m2,m3,m4,m5,m6,m7)
 # Set the independent variables (IVs)
-ivs<- df1 %>% dplyr::select(lnjust1,lnjust01,justarch) %>% names()
+ivs<- df2 %>% dplyr::select(lnjust1,lnjust01,justarch) %>% names()
 
 # Create the object for each model
 models <- list()
@@ -642,7 +653,7 @@ df_long %>%
     # lnjustR=log(justR)
          ) %>% 
   dplyr::select(folio_encuestado_1,
-                respondeid,deck,
+                respondeid,deck,same_deck,
          taxperc,
          taxjust,
          perc1, just1,
@@ -663,13 +674,13 @@ dim(df3)
 skimr::skim(df3)
 
 # Hypothesis: Just tax --------------------------------------------------------
-m1 <- "sexo_vig+edad_vig"
-m2 <- "apellido_vig+nse_ori_vig + educ_madre_vig"
-m3 <- "educ_vig + ingresos_vig + necesidades_vig"
-m4 <- "lnperc1"
-m5 <- "income5 + educ + sexo_re + edad_re"
-m6 <- "sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig+lnperc1 +income5 + educ + sexo_re + edad_re"
-m7 <- "sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig+lnperc1 +income5 + educ + sexo_re + edad_re + wave + deck"
+m1 <- "sexo_vig+edad_vig + wave"
+m2 <- "apellido_vig+nse_ori_vig + educ_madre_vig + wave"
+m3 <- "educ_vig + ingresos_vig + necesidades_vig + wave"
+m4 <- "lnperc1 + wave"
+m5 <- "income5 + educ + sexo_re + edad_re + wave"
+m6 <- "sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig+lnperc1 +income5 + educ + sexo_re + edad_re + wave"
+m7 <- "sexo_vig+edad_vig + apellido_vig+nse_ori_vig + educ_madre_vig + educ_vig + ingresos_vig + necesidades_vig+lnperc1 +income5 + educ + sexo_re + edad_re + wave + deck + same_deck"
 
 
 hipotesis <- c(m1,m2,m3,m4,m5,m6,m7)
@@ -679,7 +690,7 @@ ivs<- df3 %>% dplyr::select(lnjust1,lnjust01,justarch) %>% names()
 # Create the object for each model
 models <- list()
 for (i in ivs) {
-models[[i]] <- paste0(i,"~",hipotesis,"+(1|folio_encuestado_1)")  
+models[[i]] <- paste0(i,"~",hipotesis,"+(1+ wave|folio_encuestado_1)")  
 }
 
 # Estimate the multilevel models
@@ -692,9 +703,11 @@ for (i in ivs) {
 fit_jtlong <- fits
 # change model names within list
 names(fit_jtlong) <- paste0(rep(ivs,each=length(hipotesis)),1:length(hipotesis))
-save(fit_jtlong,here::here("input/data/proc/fit_jtlong.RData"))
+save(fit_jtlong,file = here::here("input/data/proc/fit_jtlong.RData"))
 knitreg(fit_jtlong[c("justarch1","justarch2","justarch3","justarch4","justarch5","justarch6","justarch7")])
 ```
+
+# plots 
 
 ```{r modelw1}
 # Funciones para renderizar tablas tanto en HTML como en pdf
@@ -721,7 +734,7 @@ n_j <- lme4::ngrps(fit_pt1$lnperc16)
 
 paste0("Obs = ",n_i,", Clusters = ",n_j)
 labels1 <- 
-c("Gender (ref: Male) Female ","45 years (ref: 35 years)","55 years", 
+c("Gender (ref: Male) Female","45 years (ref: 35 years)","55 years", 
   "Last name: Basque-castillian (ref: Spanish)","European","Indigenous",
   "School origin: Charter (Ref: Public)","Private",
   "Mother's Educ: Secondary (ref: Primary)","Technical","Universitary","Graduate",
@@ -752,7 +765,6 @@ ggsave(plot = last_plot(),filename = "modelsw1.png",device = "png",
        path = here::here("output"),width = 1.75,height = 1.5,units = "cm",scale = 18)
 ```
 
-
 ```{r modelw2}
 # Funciones para renderizar tablas tanto en HTML como en pdf
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
@@ -775,7 +787,7 @@ n_j <- lme4::ngrps(fit_pt2$lnperc16)
 
 paste0("Obs = ",n_i,", Clusters = ",n_j)
 labels1 <- 
-c("Female (ref: Male)","45 years (ref: 35 years)","55 years", 
+c("Gender (ref: Male) Female","45 years (ref: 35 years)","55 years", 
   "Last name: Basque-castillian (ref: Spanish)","European","Indigenous",
   "School origin: Charter (Ref: Public)","Private",
   "Mother's Educ: Secondary (ref: Primary)","Technical","Universitary","Graduate",
@@ -805,6 +817,60 @@ modelsw2+
 ggsave(plot = last_plot(),filename = "modelsw2.png",device = "png",
        path = here::here("output"),width = 1.75,height = 1.5,units = "cm",scale = 18)
 ```
+
+```{r longitudinalw1w2}
+# Funciones para renderizar tablas tanto en HTML como en pdf
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(dplyr,lme4,texreg,tidyverse) # librerias
+load(file = here::here("input/data/proc/fit_jtlong.RData"))
+
+omit_coef <- c("deck","same_deck","sexo_reFemale","edad_re2","edad_re3","edad_re4","edad_re5","edad_re6","income5No income/Missing")
+sjPlot::tab_model(fit_jtlong$lnjust017,show.ci = F,wrap.labels = 200,p.style = "stars",rm.terms = omit_coef)
+
+# modelsw1<- sjPlot::plot_model(fit_jt1$lnjust16,rm.terms = omit_coef,show.p = T,show.values = T)
+modelslong<- sjPlot::plot_model(fit_jtlong$lnjust017,rm.terms = omit_coef,show.p = T,show.values = T,dot.size = 2,show.intercept = F)
+modelslong$data$p.label <- modelslong$data$p.stars
+modelslong$data$p.label[modelslong$data$p.label=="n.s."] <- ""
+# View(modelslong)
+n_i <- nobs(fit_jtlong$lnjust017)
+n_j <- lme4::ngrps(fit_jtlong$lnjust017)
+
+paste0("Obs = ",n_i,", Clusters = ",n_j)
+labels1 <- 
+c("Gender (ref: Male) Female","45 years (ref: 35 years)","55 years", 
+  "Last name: Basque-castillian (ref: Spanish)","European","Indigenous",
+  "School origin: Charter (Ref: Public)","Private",
+  "Mother's Educ: Secondary (ref: Primary)","Technical","Universitary","Graduate",
+  "Education: Secondary (ref: Primary)","Technical","Universitary","Graduate",
+  "Income (CLP): $655,000 (ref: $320,500)","$1,200,000","$2,500,000","$4,300,0000",
+  "Has Children: Has 1 (ref: Doesn't have)","Has 2","Has 5",
+   "Perceived income tax (log)",
+  "Income: Quintile 2 (ref: Quintile 1)", "Quintile 3" ,"Quintile 4","Quintile 5",
+  "Education: High school (ref: Primary)", "Technical" ,"Universitary",
+  "Wave (ref: wave 1)",
+  "Same deck (ref: No)"
+  )
+
+modelslong+
+  scale_y_continuous(limits = c(-3,7.5)) +
+  scale_x_discrete(labels=rev(labels1)) +
+  labs(title = "Preferred income tax (Longitudinal)",
+        caption=paste0("Obs = ",n_i,", Clusters = ",n_j)
+        ) +
+  theme(legend.position = "bottom",
+        plot.caption = element_text(size = 12),
+        axis.text.y=element_text(size=12)) +
+  geom_hline(yintercept = 0,linetype = "dashed") +
+  geom_vline(xintercept = 9.5,linetype = "solid",size=1,color="grey") + # respondent level
+  annotate("text", x = 9.2, y = 6, label = "Respondent level",size=4) +
+  geom_vline(xintercept = 33.5,linetype = "solid",size=1,color="grey") + 
+  annotate("text", x = 33, y = 6, label = "Vignette level",size=4) 
+
+ggsave(plot = last_plot(),filename = "long.png",device = "png",
+       path = here::here("output"),width = 1.75,height = 1.5,units = "cm",scale = 12)
+```
+
 
 tobit model:
 

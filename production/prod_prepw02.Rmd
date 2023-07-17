@@ -239,7 +239,9 @@ summary(long01$taxjust)
 # A) Merge sociodemographics from respondent to long base.
 long02<- 
   left_join(long01,data01[,c("ticket","ResponseId","Finished","sexo","edad",
-                             "educ","ingresos",'cant_hogar',"act_prin","comuna")])  
+                             "educ","ingresos",'cant_hogar',"act_prin","comuna",
+                             "merit_perc_effort","merit_perc_talent",
+                             "merit_pref_effort","merit_pref_talent")])  
 
 #select ID from ticket variable
 long02$folio_encuestado_1 <- stringr::str_split(long02$ticket,pattern = "_",simplify = T)[,1]
@@ -295,7 +297,9 @@ vig_resp <- vig_resp %>% var_labels(respondeid = "Id Respondent",
                                     educ_vig = "Education (vignette level)",
                                     necesidades_vig = "Needs - number of children (vignette level)",
                                     educ_madre_vig = "Mother's education level (vignette level)",
-                                    ingresos_vig = "Income in CLP (vignette level)")
+                                    ingresos_vig = "Income in CLP (vignette level)",
+                                    merit_perc_effort = "Perceived meritocracy"
+                                    )
 
 ```
 
