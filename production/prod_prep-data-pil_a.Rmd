@@ -1,5 +1,5 @@
 ---
-title: "Data preparation: Pilot study - Netquest"
+title: "Data preparation: Pilot study - Facebook"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 css: "../input/css/custom.css"
 output:
@@ -30,19 +30,6 @@ Sys.setlocale("LC_MESSAGES", 'es_CL.UTF-8')
 Sys.setenv(LANG = "es_CL.UTF-8")
 ```
 
-
-```{r include=FALSE}
-colorize <- function(x, color) {
-  if (knitr::is_latex_output()) {
-    sprintf("\\textcolor{%s}{%s}", color, x)
-  } else if (knitr::is_html_output()) {
-    sprintf("<span style='color: %s;'>%s</span>", color, 
-      x)
-  } else x
-}
-```
-
-
 load packages
 ```{r}
 library(sjlabelled)
@@ -63,17 +50,15 @@ library(lme4)
 library(sessioninfo) 
 ```
 
+
 # Data preparation
 
 ```{r}
-data01 <- read_spss(path = "input/data/original/factorial_mod-v01_august.sav")
+data01 <- read_spss(path = "input/data/original/factorial_mod-v02_June.sav")
 load(file = "input/data/proc/vig_dim.RData")
-data01 <- data01 %>% filter(StartDate>min(data01$StartDate)) # remove cases out of fieldwork date
 ```
 
 Fieldwork date: `r format(min(data01$StartDate),format='%d %B %Y') ` to `r format(max(data01$EndDate),format='%d %B %Y')`
-
-
 
 ## Filter data  
 
@@ -91,30 +76,9 @@ Fieldwork date: `r format(min(data01$StartDate),format='%d %B %Y') ` to `r forma
 data01 <- data01 %>% filter(consen==1,!is.na(Q5231))
 # data01 <- data01 %>% filter(consen==1,!is.na(Q5231))
 
-# deck_cod01<- c("FL_431_DO_","FL_446_DO_","FL_467_DO_","FL_481_DO_","FL_494_DO_",
-#                "FL_507_DO_","FL_520_DO_","FL_533_DO_","FL_546_DO_","FL_559_DO_")
-# 
-# decks01<- data01 %>% select(ResponseId,"finished"=Finished,
-#                             starts_with("p_a_"),
-#                             starts_with("p_b_"),
-#                             matches(paste(deck_cod01, collapse="|")))
-# 
-# for (i in deck_cod01) {
-#   names(decks01) <- names(decks01) %>% str_replace_all(pattern = i,replacement = "deck_vig") 
-# }
-# 
-# decks01<- remove_label(decks01)
-deck_cod01<- c("FL_191_DO_","FL_193_DO_", # deck01
-               "FL_176_DO_","FL_178_DO_", # deck02
-               "FL_161_DO_","FL_163_DO_", # deck03
-               "FL_146_DO_","FL_148_DO_", # deck04
-               "FL_131_DO_","FL_133_DO_", # deck05
-               "FL_116_DO_","FL_118_DO_", # deck06
-               "FL_101_DO_","FL_103_DO_", # deck07
-               "FL_86_DO_","FL_88_DO_",   # deck08
-               "FL_71_DO_","FL_73_DO_",   # deck09
-               "FL_56_DO_","FL_58_DO_")   # deck10
-  
+deck_cod01<- c("FL_431_DO_","FL_446_DO_","FL_467_DO_","FL_481_DO_","FL_494_DO_",
+               "FL_507_DO_","FL_520_DO_","FL_533_DO_","FL_546_DO_","FL_559_DO_")
+
 decks01<- data01 %>% select(ResponseId,"finished"=Finished,
                             starts_with("p_a_"),
                             starts_with("p_b_"),
@@ -155,12 +119,13 @@ decks03[w] <- names(decks03)[w[,"col"]]
 
 ```{r}
 wide <- setDT(decks03)
-
-long01<- melt(wide, 
-              id.vars = "ResponseId",
+names(wide)
+long01<- melt(wide, id.vars = "ResponseId",
               variable.name = "wave",
               measure = patterns("^p_a_","^p_b_","deck_vig"),
-              value.name = c("taxperc","taxjust","deck_vig"));long01$wave <- NULL
+              value.name = c("taxperc","taxjust","deck_vig"))
+
+long01$wave <- NULL
 long01 <- na.omit(long01)
 long01$deck_vig  <- str_replace_all(long01$deck_vig,pattern = "deck_vig",replacement = "")
 ```
@@ -311,7 +276,7 @@ vig_resp$ingresos.re <- set_labels(vig_resp$ingresos.re,
 ```
 
 ```{r eval=FALSE, include=FALSE}
-sjPlot::view_df(vig_resp,show.frq = T, show.prc = T, show.na = T,max.len = 50)
+sjPlot::view_df(vig_resp,show.frq = T, show.prc = T, show.na = T)
 ```
 
 # Explorar datos
@@ -343,15 +308,8 @@ plot_scatter(x =ingresos.vig,
              y = taxjust,data = filter(vig_resp,taxjust==0),title = "Distribución de $0 en taxjust según ingresos de viñeta")
 ```
 
-<style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "blue">
-
 * Vemos que tanto para `taxperc` y `taxjust` la concentración de respuestas $0 se encuentra en los niveles de ingreso 1 y 2.
 * Según el SII el impuesto a la renta aplica para aquellos que perciben ingresos superiores a 13,5 ($`r 50.372*13.5`CLP) UTM. 
-
-</div>
 
 
 ```{r}
@@ -376,6 +334,12 @@ tab.pat <- tab.pat %>% filter(mean_taxperc==0 & mean_taxjust==0)
 vig_resp <- vig_resp %>% filter(!(respondeid %in% tab.pat$respondeid))  
 ```
 
+```{r}
+kable(rbind(taxperc= quantile(long01$taxperc, probs = c(0.90,0.91,0.92,0.93,0.94,0.95,0.96,0.97,0.98,0.99,1.00),na.rm = T),
+            taxjust= quantile(long01$taxjust, probs = c(0.90,0.91,0.92,0.93,0.94,0.95,0.96,0.97,0.98,0.99,1.00),na.rm = T)),
+      caption = "Percentiles 90 a 100 para taxper y taxjust")
+```
+
 ## Revisar Patron de NA dentro de viñetas 
 
 ```{r}
@@ -391,20 +355,20 @@ n_mis_tax<- tax_na_wvig %>% group_by(id_vig_deck) %>% summarise(n_taxperc=sum(ta
 # plot_scatter(data = n_mis_tax,x = id_vig_deck,y = n_taxperc,title = "Missing en tax percibido") +theme(axis.text.x = element_text(angle = 90))
 ggplot(data = n_mis_tax,aes(x = id_vig_deck,y = n_taxperc)) +
   geom_bar(stat = "identity") +
-  scale_y_continuous(breaks = c(0,1,2)) +
+  # scale_y_continuous(breaks = c(0,1,2)) +
   labs(title = "Missing en tax percibido",
        subtitle = "Análisis incluye casos que no terminaron el cuestionario")+
   xlab(label = NULL)+
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-```{r, fig.width=18,fig.height=5, fig.cap="Missing en tax justo"}
+```{r, fig.width=18, fig.cap="Missing en tax justo"}
 # plot_scatter(data = n_mis_tax,x = id_vig_deck,y = n_taxjust,title = "Missing en tax justo") + theme(axis.text.x = element_text(angle = 90))
 ggplot(data = n_mis_tax,aes(x = id_vig_deck,y = n_taxjust)) +
   geom_bar(stat = "identity") +
-  scale_y_continuous(breaks = c(0,1,2)) +
+  # scale_y_continuous(breaks = c(0,1,2)) +
   labs(title = "Missing en tax justo",
-       subtitle =  "Análisis incluye casos que no terminaron el cuestionario")+
+       subtitle = "Análisis incluye casos que no terminaron el cuestionario")+
   xlab(label = NULL)+
   theme(axis.text.x = element_text(angle = 90))
 ```
@@ -440,7 +404,7 @@ vig_resp <- vig_resp %>% filter(!(respondeid %in% idresp_gt5$respondeid))
 
 ## Modelos para respuesta $0
 
-### Logit  
+### logit  
 
 * Creamos la variable dummy donde 1= "sujeto responde 0" y 0 = "sujeto responde != 0"
 
@@ -483,7 +447,7 @@ texreg::htmlreg(l = list(m01,m02),omit.coef = "respondeid",custom.model.names = 
 
 * Se omiten los coeficientes para cada `respondeid`
 
-### Logit multinivel
+### logit (multinivel)
 
 ```{r}
 m01.me <- glmer(pertax.0~1 + (1|respondeid),data = vig_resp,family = "binomial")
@@ -526,7 +490,8 @@ m04.me.3 <- glmer(justax.0~sexo.vig+edad.vig+educ.vig+apellido.vig+nse_ori.vig+n
 
 ```{r eval=FALSE, include=FALSE}
 screenreg(list(m03.me,m03.me.1,m03.me.2,m03.me.3,m04.me,m04.me.1,m04.me.2,m04.me.3),
-          single.row = F)
+          custom.model.names = c("pertax.0","pertax.0","pertax.0","justax.0","justax.0","justax.0"),
+          single.row = T)
 ```
 
 ```{r results='asis'}
@@ -534,25 +499,22 @@ htmlreg(list(m03.me,m03.me.1,m03.me.2,m03.me.3,m04.me,m04.me.1,m04.me.2,m04.me.3
         custom.model.names = c("pertax.0","pertax.0","pertax.0","pertax.0","justax.0","justax.0","justax.0","justax.0"), 
         single.row = F,
         doctype = F,
-        caption = "(\\#tab:tab-glm01) Modelos de regresión logística multinivel para respuesta $0", 
-        caption.above = T,
-        custom.note = "*** p < 0.001, ** p < 0.01, * p < 0.05")
+        caption = "(\\#tab:tab-glm01) Modelos de regresión logística multinivel", 
+        caption.above = T)
 ```
 
 > Vemos que el ingreso de la viñeta se asocia negativa y estadísticamente significativa con responder $0.
 
 
-```{r, fig.height=10,fig.width=10, fig.cap="Resultados para tax justo"}
-plot01<- plot_model(m04.me.3,title = "Modelo logit multinivel con interacción - tax justo")
-plot01.int<- plot_model(m04.me.3,type = "int", title = "Ingreso (vig) x Educación (res) - tax justo ") + theme(legend.position = "bottom")
+```{r, fig.height=10,fig.width=10, fig.cap="Resultados para tax percibido"}
+plot01<- plot_model(m03.me.3,title = "Modelo logit multinivel con interacción - tax percibido")
+plot01.int<- plot_model(m03.me.3,type = "int", title = "Ingreso (vig) x Educación (res) - tax percibido ") +theme(legend.position = "bottom")
 
 plot_grid(list(plot01, plot01.int), tags = TRUE,margin = c(0.5,0.5,0.5,0.5))
 ```
 
 > La asociación negativa del ingreso de la viñeta es moderado negativamente por la educación del respondente. 
 
-
-***
 
 # Calcular variables de impuestos
 
@@ -576,8 +538,8 @@ kable(rbind(taxperc= quantile(long01$taxperc, probs =seq(0.95, 1, by = 0.005),na
 ```{r}
 vig_resp$taxperc.rec <- vig_resp$taxperc
 vig_resp$taxjust.rec <- vig_resp$taxjust
-vig_resp$taxperc.rec <- ifelse(vig_resp$taxperc.rec<=900000,yes = vig_resp$taxperc.rec,no = NA)
-vig_resp$taxjust.rec <- ifelse(vig_resp$taxjust.rec<=800000,yes = vig_resp$taxjust.rec,no = NA)
+vig_resp$taxperc.rec <- ifelse(vig_resp$taxperc.rec<=1855000,yes = vig_resp$taxperc.rec,no = NA)
+vig_resp$taxjust.rec <- ifelse(vig_resp$taxjust.rec<=1290000,yes = vig_resp$taxjust.rec,no = NA)
 vig_resp$taxperc.rec <-set_label(vig_resp$taxperc.rec,"Perceived income tax (P97.5)")
 vig_resp$taxjust.rec <-set_label(vig_resp$taxjust.rec,"Just income tax (P97.5)")
 ```
@@ -610,20 +572,21 @@ sjmisc::frq(vig_resp$taxjust==0,title = "Cantidad de respuestas $0 en taxjust")
 </div>
 </div>
 
-Vemos que en el caso de `taxpec`, las respuestas $0 son un 13,12%, mientras que en `taxjust` son un un 24,7%. Como vimos anteriormente en los modelos regresión, las respuesta no son independientes de los ingresos de la viñeta. Por tanto, se recomienda mantener estos valores. 
+Vemos que en el caso de `taxpec`, las respuestas $0 son un 26,32%, mientras que en `taxjust` son un un 37,57%. Como vimos anteriormente en los modelos regresión, las respuesta no son independientes de los ingresos de la viñeta. Por tanto, se recomienda mantener estos valores. 
 
 <style>
 div.blue { background-color:#98FB98; border-radius: 5px; padding: 20px;}
 </style>
 <div class = "blue">
 
-**Decisión:**  Finalmente filtramos y excluimos los valores en parte superior de ambas variables equivalentes a `taxperc < 900000 & taxjust< 800000`
+**Decisión:**  Finalmente filtramos y excluimos los valores en parte superior de ambas variables equivalentes a `taxperc < 1855000 & taxjust< 1290000`
 
 </div>
 
 ```{r}
-vig_resp <- vig_resp %>% filter(taxperc < 900000 & taxjust< 800000)
+vig_resp <- vig_resp %>% filter(taxperc < 1855000 & taxjust< 1290000)
 ```
+
 
 ## Alternativa A: incluye $0
 
@@ -680,7 +643,7 @@ print(dfSummary(vig_resp, headings = FALSE), method = "render")
 # Save data
 
 ```{r}
-save(vig_resp,file = "input/data/proc/vig_resp-b.RData")
+save(vig_resp,file = "input/data/proc/vig_resp-a.RData")
 ```
 
 # Session info
