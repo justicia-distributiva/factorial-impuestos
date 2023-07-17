@@ -237,6 +237,8 @@ The answers to these questions should be answered with amounts in Chilean pesos.
 ---
 ### Perceptions and preferences about taxes
 
+--
+
 .pull-left[
 
 - Responses with a value of $0 are present for both perceptions (~18%) and preferences (~30%) about income taxes 
@@ -248,6 +250,8 @@ The answers to these questions should be answered with amounts in Chilean pesos.
 $$I_{tax}= \ln\big(\text{income tax} + k_i\big)$$
 
 ]
+
+--
 
 .pull-right[  
 
