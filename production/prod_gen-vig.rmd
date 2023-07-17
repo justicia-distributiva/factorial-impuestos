@@ -1,7 +1,7 @@
 ---
 title: "Vignette generation"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
-css: "../input/css/custom.css"
+# css: "../input/css/custom.css"
 output:
   bookdown::html_document2:
     number_sections: true

@@ -283,11 +283,11 @@ dim(df1)
 j1 <- 
 df1 %>% 
   dplyr::select(income=justarch) %>% 
-  mutate(Variable="Preferred")
+  mutate(Variable="Preferences")
 
 p1 <- 
 df1 %>% dplyr::select(income=percarch) %>% 
-    mutate(Variable="Perceived")
+    mutate(Variable="Perceptions")
 
 
 df_taxes <- bind_rows(j1,p1) 
@@ -749,12 +749,13 @@ c("Gender (ref: Male) Female","45 years (ref: 35 years)","55 years",
 modelsw1+
   scale_y_continuous(limits = c(-3,7.5)) +
   scale_x_discrete(labels=rev(labels1)) +
-  labs(title = "Perceived and Preferred income tax (Wave 1)",
+  labs(title = "Multilevel lineal models for Perceptions and preferences about income taxes",
         caption=paste0("Obs = ",n_i,", Clusters = ",n_j)
         ) +
   theme(legend.position = "bottom",
         plot.caption = element_text(size = 12),
         axis.text.y=element_text(size=12)) +
+  scale_color_discrete(labels=c('Preferences', 'Perceptions')) +
   geom_hline(yintercept = 0,linetype = "dashed") +
   geom_vline(xintercept = 8.5,linetype = "solid",size=1,color="grey") + # respondent level
   annotate("text", x = 8.2, y = 6, label = "Respondent level",size=4) +
@@ -762,7 +763,7 @@ modelsw1+
   annotate("text", x = 31, y = 6, label = "Vignette level",size=4) 
 
 ggsave(plot = last_plot(),filename = "modelsw1.png",device = "png",
-       path = here::here("output"),width = 1.75,height = 1.5,units = "cm",scale = 18)
+       path = here::here("output"),width = 1.75,height = 1.5,units = "cm",scale = 16)
 ```
 
 ```{r modelw2}
