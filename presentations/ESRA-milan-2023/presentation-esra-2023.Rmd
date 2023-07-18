@@ -349,7 +349,7 @@ class: inverse
 
 - *Need* as the number of children decreases income tax preferences
 
-- *Respondent status:* Education matters only for lower perceived income taxes (H2 ✓), but not for preferences (H3 ✖)
+- *Respondent status:* R's Education matters only for higher perceived income taxes (~H2), but not for preferences (H3 ✖)
 ]
 
 .pull-right[

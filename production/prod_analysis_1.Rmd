@@ -723,6 +723,8 @@ sjPlot::tab_model(fit_pt1$lnperc16,fit_jt1$lnjust16,show.ci = F,wrap.labels = 20
 nobs(fit_pt1$lnperc16)
 nobs(fit_jt1$lnjust16)
 
+sjPlot::plot_model(model = fit_pt1$lnperc16,type = "pred",terms = "educ")
+
 # modelsw1<- sjPlot::plot_model(fit_jt1$lnjust16,rm.terms = omit_coef,show.p = T,show.values = T)
 modelsw1<- sjPlot::plot_models(fit_pt1$lnperc16,fit_jt1$lnjust16,rm.terms = omit_coef,show.p = T,show.values = T,dot.size = 2)
 modelsw1$data$p.label <- modelsw1$data$p.stars
