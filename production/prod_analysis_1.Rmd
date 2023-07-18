@@ -751,7 +751,7 @@ c("Gender (ref: Male) Female","45 years (ref: 35 years)","55 years",
 modelsw1+
   scale_y_continuous(limits = c(-3,7.5)) +
   scale_x_discrete(labels=rev(labels1)) +
-  labs(title = "Multilevel lineal models for Perceptions and preferences about income taxes",
+  labs(title = "Multilevel linear models for Perceptions and Preferences about income taxes",
         caption=paste0("Obs = ",n_i,", Clusters = ",n_j)
         ) +
   theme(legend.position = "bottom",
