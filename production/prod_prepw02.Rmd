@@ -239,9 +239,10 @@ summary(long01$taxjust)
 # A) Merge sociodemographics from respondent to long base.
 long02<- 
   left_join(long01,data01[,c("ticket","ResponseId","Finished","sexo","edad",
-                             "educ","ingresos",'cant_hogar',"act_prin","comuna",
-                             "merit_perc_effort","merit_perc_talent",
-                             "merit_pref_effort","merit_pref_talent")])  
+                             "educ","ingresos",'cant_hogar',"act_prin","comuna"
+                             # "merit_perc_effort","merit_perc_talent",
+                             # "merit_pref_effort","merit_pref_talent"
+                             )])  
 
 #select ID from ticket variable
 long02$folio_encuestado_1 <- stringr::str_split(long02$ticket,pattern = "_",simplify = T)[,1]
@@ -274,6 +275,15 @@ vig_resp<-
   select(starts_with("folio_encuestado"),respondeid,deck,id,deck_vig,everything(),-p1)  
 ```
 
+```{r}
+vig_resp$taxperc_0 <- ifelse(vig_resp$taxperc==0,yes = 1,no =0)
+frq(vig_resp$taxperc_0)
+
+vig_resp$taxjust_0 <- ifelse(vig_resp$taxjust==0,yes = 1,no =0)
+frq(vig_resp$taxjust_0)
+```
+
+
 - Variable label 
 
 ```{r}
@@ -298,7 +308,7 @@ vig_resp <- vig_resp %>% var_labels(respondeid = "Id Respondent",
                                     necesidades_vig = "Needs - number of children (vignette level)",
                                     educ_madre_vig = "Mother's education level (vignette level)",
                                     ingresos_vig = "Income in CLP (vignette level)",
-                                    merit_perc_effort = "Perceived meritocracy"
+                                    # merit_perc_effort = "Perceived meritocracy"
                                     )
 
 ```
